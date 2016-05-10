@@ -1,0 +1,69 @@
+Makefile------宏、if条件、shell命令的使用 
+
+
+#include <stdio.h>  
+      
+    int main(void)  
+    {  
+        int i;  
+    #ifdef FLAG  
+        i = 1;  
+    #else  
+        i = 3;  
+    #endif  
+        printf(" i = %d \n", i);  
+        return 0;  
+    }  
+
+
+
+Makefile
+
+[cpp] view plain copy
+print?在CODE上查看代码片派生到我的代码片
+
+    CC=gcc  
+      
+    input_flag=  
+      
+    ifdef input_flag  
+    CFLAGS= -D $(input_flag)  
+    endif  
+      
+    SRC= main.c  
+      
+    .PHONY:all clean    
+      
+    ifdef input_flag  
+    all:  
+        $(CC) $(CFLAGS) $(SRC) -o main  
+    else  
+    all:  
+        $(CC) $(CFLAGS) $(SRC) -o main  
+        @echo "do all"  
+    endif  
+      
+    clean:  
+        rm *~ *.o -f  
+
+
+
+运行：
+
+
+[plain] view plain copy
+print?在CODE上查看代码片派生到我的代码片
+
+    snail@ubuntu:4.makefile-if$ make input_flag=FLAG  
+    gcc -D FLAG main.c -o main  
+    snail@ubuntu:4.makefile-if$ ./main   
+     i = 1   
+    snail@ubuntu:4.makefile-if$ make   
+    gcc  main.c -o main  
+    do all  
+    snail@ubuntu:4.makefile-if$ ./main   
+     i = 3   
+    snail@ubuntu:4.makefile-if$   
+
+
+通过宏控制条件编译。
